@@ -1,0 +1,218 @@
+fileFormatVersion: 2
+guid: 0d1f8dd42165ff84997f67e16bf6d592
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Ninja8_body_not_smooth_head:pCube1
+    100004: Ninja8_body_not_smooth_head:pCube2
+    100006: Ninja8_body_not_smooth_head:pCube3
+    100008: Ninja8_body_not_smooth_head:pCylinder10
+    100010: Ninja8_body_not_smooth_head:pCylinder2
+    100012: Ninja8_body_not_smooth_head:pCylinder3
+    100014: Ninja8_body_not_smooth_head:pCylinder5
+    100016: Ninja8_body_not_smooth_head:pCylinder6
+    100018: Ninja8_body_not_smooth_head:pCylinder7
+    100020: Ninja8_body_not_smooth_head:pCylinder8
+    100022: Ninja8_body_not_smooth_head:pCylinder9
+    100024: Ninja8_body_not_smooth_head:polySurface1
+    100026: Ninja8_body_not_smooth_head:polySurface1 1
+    100028: Ninja8_body_not_smooth_head:polySurface2
+    100030: Ninja8_body_not_smooth_head:polySurface3
+    100032: Ninja8_body_not_smooth_head:polySurface5
+    100034: Ninja8_body_not_smooth_head:polySurface5 1
+    100036: Ninja8_body_not_smooth_head:polySurface6
+    100038: Ninja8_body_not_smooth_head:polySurface6 1
+    100040: Ninja8_body_not_smooth_head:polySurface7
+    100042: Ninja8_body_not_smooth_head:polySurface8
+    100044: Ninja8_body_not_smooth_head:transform1
+    100046: Ninja8_body_not_smooth_head:transform10
+    100048: Ninja8_body_not_smooth_head:transform11
+    100050: Ninja8_body_not_smooth_head:transform12
+    100052: Ninja8_body_not_smooth_head:transform13
+    100054: Ninja8_body_not_smooth_head:transform14
+    100056: Ninja8_body_not_smooth_head:transform15
+    100058: Ninja8_body_not_smooth_head:transform16
+    100060: Ninja8_body_not_smooth_head:transform17
+    100062: Ninja8_body_not_smooth_head:transform18
+    100064: Ninja8_body_not_smooth_head:transform19
+    100066: Ninja8_body_not_smooth_head:transform2
+    100068: Ninja8_body_not_smooth_head:transform3
+    100070: Ninja8_body_not_smooth_head:transform4
+    100072: Ninja8_body_not_smooth_head:transform5
+    100074: Ninja8_body_not_smooth_head:transform6
+    100076: Ninja8_body_not_smooth_head:transform7
+    100078: Ninja8_body_not_smooth_head:transform8
+    100080: Ninja8_body_not_smooth_head:transform9
+    100082: pCylinder1
+    100084: pCylinder2
+    100086: polySurface2
+    100088: polySurface4
+    100090: polySurface6
+    100092: polySurface6 1
+    100094: polySurface7
+    100096: polySurface8
+    100098: polySurface8 1
+    100100: polySurface9
+    100102: polySurface9 1
+    100104: transform1
+    100106: transform10
+    100108: transform11
+    100110: transform2
+    100112: transform3
+    100114: transform4
+    100116: transform5
+    100118: transform6
+    100120: transform7
+    100122: transform8
+    100124: transform9
+    400000: //RootNode
+    400002: Ninja8_body_not_smooth_head:pCube1
+    400004: Ninja8_body_not_smooth_head:pCube2
+    400006: Ninja8_body_not_smooth_head:pCube3
+    400008: Ninja8_body_not_smooth_head:pCylinder10
+    400010: Ninja8_body_not_smooth_head:pCylinder2
+    400012: Ninja8_body_not_smooth_head:pCylinder3
+    400014: Ninja8_body_not_smooth_head:pCylinder5
+    400016: Ninja8_body_not_smooth_head:pCylinder6
+    400018: Ninja8_body_not_smooth_head:pCylinder7
+    400020: Ninja8_body_not_smooth_head:pCylinder8
+    400022: Ninja8_body_not_smooth_head:pCylinder9
+    400024: Ninja8_body_not_smooth_head:polySurface1
+    400026: Ninja8_body_not_smooth_head:polySurface1 1
+    400028: Ninja8_body_not_smooth_head:polySurface2
+    400030: Ninja8_body_not_smooth_head:polySurface3
+    400032: Ninja8_body_not_smooth_head:polySurface5
+    400034: Ninja8_body_not_smooth_head:polySurface5 1
+    400036: Ninja8_body_not_smooth_head:polySurface6
+    400038: Ninja8_body_not_smooth_head:polySurface6 1
+    400040: Ninja8_body_not_smooth_head:polySurface7
+    400042: Ninja8_body_not_smooth_head:polySurface8
+    400044: Ninja8_body_not_smooth_head:transform1
+    400046: Ninja8_body_not_smooth_head:transform10
+    400048: Ninja8_body_not_smooth_head:transform11
+    400050: Ninja8_body_not_smooth_head:transform12
+    400052: Ninja8_body_not_smooth_head:transform13
+    400054: Ninja8_body_not_smooth_head:transform14
+    400056: Ninja8_body_not_smooth_head:transform15
+    400058: Ninja8_body_not_smooth_head:transform16
+    400060: Ninja8_body_not_smooth_head:transform17
+    400062: Ninja8_body_not_smooth_head:transform18
+    400064: Ninja8_body_not_smooth_head:transform19
+    400066: Ninja8_body_not_smooth_head:transform2
+    400068: Ninja8_body_not_smooth_head:transform3
+    400070: Ninja8_body_not_smooth_head:transform4
+    400072: Ninja8_body_not_smooth_head:transform5
+    400074: Ninja8_body_not_smooth_head:transform6
+    400076: Ninja8_body_not_smooth_head:transform7
+    400078: Ninja8_body_not_smooth_head:transform8
+    400080: Ninja8_body_not_smooth_head:transform9
+    400082: pCylinder1
+    400084: pCylinder2
+    400086: polySurface2
+    400088: polySurface4
+    400090: polySurface6
+    400092: polySurface6 1
+    400094: polySurface7
+    400096: polySurface8
+    400098: polySurface8 1
+    400100: polySurface9
+    400102: polySurface9 1
+    400104: transform1
+    400106: transform10
+    400108: transform11
+    400110: transform2
+    400112: transform3
+    400114: transform4
+    400116: transform5
+    400118: transform6
+    400120: transform7
+    400122: transform8
+    400124: transform9
+    2100000: lambert1
+    2300000: polySurface8
+    3300000: polySurface8
+    4300000: polySurface8
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 15
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
