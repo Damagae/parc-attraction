@@ -5,17 +5,17 @@ using UnityEngine.AI;
 
 public class MoveVisitor : MonoBehaviour {
 
-	private Transform goal;
+	private Vector3 goal;
 	public QueuesManager qm;
 	private Queue currentQueue;
 	private NavMeshAgent agent;
 	private int queueIndex;
 	private int placeInQueueIndex;
 	private Attraction attraction;
-	private bool inQueue;
-	private bool inAttraction;
-	private bool lookingForQueue;
-	private bool reachingAttraction;
+	private bool inQueue; // the visitor is in a queue
+	private bool inAttraction; // the visitor is in a running attraction
+	private bool lookingForQueue; // the visitor is looking for a new queue
+	private bool reachingAttraction; // the visitor was first in the queue and is now going in the attraction
 	private GameObject visitor;
 
 	// Use this for initialization
@@ -28,7 +28,8 @@ public class MoveVisitor : MonoBehaviour {
 		queueIndex = qm.GetRandomIndex();
 		placeInQueueIndex = -1;
 		currentQueue = qm.GetQueue(queueIndex);
-		MoveToNextQueue();
+		if (AgentReady())
+			MoveToNextQueue();
 	}
 
 	// Update is called once per frame
@@ -66,12 +67,12 @@ public class MoveVisitor : MonoBehaviour {
 
 		// visitor in attraction
 		else if (inAttraction) {
-			if (attraction.IsOver()) {
+			if (attraction.IsOver() || attraction.CanVisitorGo(this.gameObject)) {
 				agent.enabled = true;
-				// Debug.Log("C'est fini");
 				inAttraction = false;
 				inQueue = false;
 				lookingForQueue = true;
+				currentQueue = null;
 				MoveToNextQueue();
 			} else {
 				this.gameObject.transform.position = attraction.GetVisitorPosition();
@@ -82,32 +83,53 @@ public class MoveVisitor : MonoBehaviour {
 		else if (lookingForQueue) {
 			// S'il a atteint sa destination
 			 if (agent.enabled && !agent.pathPending) {
-			     if (agent.remainingDistance <= agent.stoppingDistance) {
+			     if (agent.isOnNavMesh && agent.remainingDistance <= agent.stoppingDistance && IsCloseEnough()) {
 			         if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) {
 								 	 placeInQueueIndex = currentQueue.GetLatestPlaceIndex();
 									 attraction = currentQueue.GetAttraction();
 			             currentQueue.TakesPlace();
 									 inQueue = true;
-									 // Debug.Log(this.gameObject.name + " enters queue position " + placeInQueueIndex);
 			         }
 			     }
 				}
 			// S'il n'a pas atteint sa destination
-			 if (currentQueue.NextPlace().position != goal.position && !inQueue) {
-						if (currentQueue.CanGo()) {
-			 					goal = currentQueue.NextPlace();
-			 					agent.destination = goal.position;
-			 			} else {
-			 					agent.destination = new Vector3(125.0f,15.87f,221.5f); // position random
-			 			}
+			 if (currentQueue.NextPlace() != goal && !inQueue) {
+				 if (agent.isOnNavMesh) {
+					 if (currentQueue.CanGo()) {
+							 goal = currentQueue.NextPlace();
+							 agent.destination = goal;
+					 } else {
+						 	MoveToNextQueue();
+							 // agent.destination = new Vector3(125.0f,15.87f,221.5f); // position random
+					 }
+				 }
 			 	}
 		}
 
 	}
 
+	private bool AgentReady() {
+		if (agent.isOnNavMesh) {
+			return true;
+		} else {
+			Destroy(this.gameObject, 1);
+		}
+		return false;
+	}
+
+	private bool IsCloseEnough() {
+		Vector3 difference = agent.nextPosition - goal;
+		return (difference.x < 1 && difference.z < 1);
+	}
+
 	void NewQueue() {
-		queueIndex = qm.GetRandomIndex();
+		int newQueueIndex = 0;
+		while (newQueueIndex == queueIndex) {
+			newQueueIndex = qm.GetRandomIndex();
+		}
+		queueIndex = newQueueIndex;
 		currentQueue = qm.GetQueue(queueIndex);
+
 	}
 
 	void UpdateCurrentQueue() {
@@ -115,15 +137,14 @@ public class MoveVisitor : MonoBehaviour {
 	}
 
 	void MoveToNextQueue() {
-		if (currentQueue.CanGo()) {
+		if (currentQueue && currentQueue.CanGo()) {
 			Move(currentQueue.NextPlace());
 		} else {
 			NewQueue();
 		}
 	}
 
-	void Move(Transform transform) {
-		goal = transform;
-		agent.destination = goal.position;
+	void Move(Vector3 goal) {
+		agent.destination = goal;
 	}
 }

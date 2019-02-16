@@ -5,47 +5,72 @@ using UnityEngine;
 public class Attraction : MonoBehaviour {
 
 	public Transform entryLocation;
-	private bool canStart;
-	public bool isRunning;
-	private GameObject visitor;
-	public GameObject boat;
+	public int capacity = 1;
 	public float duration;
-	private float startTime;
 	public Transform end;
+	public Transform disparationLocation;
+	protected int takenPlaces;
+	protected bool canStart;
+	protected bool isRunning;
+	protected List<GameObject> visitors;
+	protected List<float> startTimes;
+	protected float timeBetweenEntries = 1;
 
 	// Use this for initialization
 	void Start () {
+		visitors = new List<GameObject>();
+		startTimes = new List<float>();
+		takenPlaces = 0;
 		canStart = true;
 	}
 
-	public Transform GetEntryLocation() {
-		return entryLocation;
+	public Vector3 GetEntryLocation() {
+		return entryLocation.position;
 	}
 
-	public void StartAttraction(GameObject go) {
-		canStart = false;
+	public virtual Vector3 GetVisitorPosition() {
+		return disparationLocation ? disparationLocation.position : new Vector3(0,-100,0);
+	}
+
+	private bool CanGetIn() {
+		float current = Time.time;
+		if (startTimes.Count < 1) {
+			return true;
+		}
+		return (current - startTimes[startTimes.Count - 1] > timeBetweenEntries);
+	}
+
+	public virtual void StartAttraction(GameObject go) {
 		isRunning = true;
-		visitor = go;
-		visitor.transform.position = boat.transform.position;
-		startTime = Time.time;
+		var visitor = go;
+		visitors.Add(visitor);
+		visitor.transform.position = GetVisitorPosition();
+		startTimes.Add(Time.time);
 	}
 
-	public Vector3 GetVisitorPosition() {
-		Vector3 bp = boat.transform.position;
-		return new Vector3(bp[0], bp[1] + 2, bp[2]);
+	public bool CanVisitorGo(GameObject visitor) {
+		return !visitors.Exists(x => x == visitor);
 	}
 
 	public bool CanStart() {
-		return canStart;
+		if (takenPlaces >= capacity || !CanGetIn()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public void TakesPlace() {
-		canStart = false;
+		++takenPlaces;
+		canStart = true;
+		if (takenPlaces >= capacity) {
+			canStart = false;
+		}
 	}
 
-	private bool HasDurationElapsed() {
+	protected bool HasDurationElapsed(int index) {
 		float current = Time.time;
-		return (current - startTime > duration);
+		return (current - startTimes[index] > duration);
 	}
 
 	public bool IsOver() {
@@ -56,14 +81,19 @@ public class Attraction : MonoBehaviour {
 	void Update () {
 
 		if (isRunning) {
-			if (HasDurationElapsed()) {
-				Vector3 dest = new Vector3(6.77f, 100, 2.08f);
-				boat.transform.position = dest;
-				visitor.transform.position = end.position;
-				isRunning = false;
-				canStart = true;
-
+			for (int i = 0; i < visitors.Count; ++i) {
+				if (HasDurationElapsed(i)) {
+					visitors[i].transform.position = end.position;
+					visitors.Remove(visitors[i]);
+					startTimes.Remove(startTimes[i]);
+					--takenPlaces;
+					if (takenPlaces <= 0) {
+						isRunning = false;
+					}
+				}
 			}
+		} else {
+
 		}
 
 	}

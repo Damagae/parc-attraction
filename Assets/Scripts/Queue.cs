@@ -1,43 +1,54 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Queue : MonoBehaviour {
 
-	public Transform[] placesPos;
+	public Vector3 orientation = new Vector3(-1.0f, 0.0f, 0.1f);
 	public Attraction attraction;
+	public Transform start;
+	public float spaceBetween = 2;
 	private bool[] placesTaken;
-	private int latestPlaceIndex;
+	private int latestPlaceIndex = 0;
 
 	// Use this for initialization
 	void Start () {
-		latestPlaceIndex = 0;
-		placesTaken = new bool[placesPos.Length];
+		placesTaken = new bool[100];
 		for (int i = 0; i < placesTaken.Length; ++i) {
 			placesTaken[i] = false;
 		}
 	}
 
+	// Return true if a new visitor can go to the queue (if places are available)
 	public bool CanGo() {
-		return latestPlaceIndex < placesPos.Length;
-	}
-
-	public Transform NextPlace() {
-		return placesPos[latestPlaceIndex];
+		if (latestPlaceIndex == 99) {
+			return false;
+		}
+		if (latestPlaceIndex > 30) {
+			if (Random.Range(1,4) == 4)
+				return true;
+			return false;
+		}
+		return true; // always return true in this version (no limit)
 	}
 
 	public int GetLatestPlaceIndex() {
 		return latestPlaceIndex;
 	}
 
-	public Transform GetPlacePosition(int index) {
-		return placesPos[index];
+	// Return the position for the visitor to head to
+	public Vector3 NextPlace() {
+		return GetPlacePosition(latestPlaceIndex);
+	}
+
+	// Retrun a vector3 from an index
+	public Vector3 GetPlacePosition(int index) {
+		return start.position + orientation * index * spaceBetween;
 	}
 
 	public void TakesPlace() {
-		placesTaken[latestPlaceIndex] = true;
-		if (latestPlaceIndex < placesPos.Length - 1)
-			++latestPlaceIndex;
+		++latestPlaceIndex;
+		placesTaken[latestPlaceIndex - 1] = true;
 	}
 
 	public Attraction GetAttraction() {
@@ -50,15 +61,15 @@ public class Queue : MonoBehaviour {
 	}
 
 	private bool IsNextPlaceTaken(int index) {
-		if (index > 0)
+		if (index > 0) {
 			return placesTaken[index-1];
-		else
-			return true;
+		}
+		return true;
 	}
 
 	public int GetNewPlaceIndex(int index) {
 		// If next place is not taken
-		if (!IsNextPlaceTaken(index)) {
+		if (!IsNextPlaceTaken(index) && index > 0) {
 			placesTaken[index] = false;
 			placesTaken[index-1] = true;
 			return index-1; // change
