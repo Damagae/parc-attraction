@@ -7,7 +7,9 @@ public class Queue : MonoBehaviour {
 	public Vector3 orientation = new Vector3(-1.0f, 0.0f, 0.1f);
 	public Attraction attraction;
 	public Transform start;
+	public int maxCapacity = 50;
 	public float spaceBetween = 2;
+
 	private bool[] placesTaken;
 	private int latestPlaceIndex = 0;
 
@@ -21,15 +23,14 @@ public class Queue : MonoBehaviour {
 
 	// Return true if a new visitor can go to the queue (if places are available)
 	public bool CanGo() {
-		if (latestPlaceIndex == 99) {
+		if (latestPlaceIndex >= maxCapacity) {
 			return false;
 		}
-		if (latestPlaceIndex > 30) {
-			if (Random.Range(1,4) == 4)
-				return true;
-			return false;
+		// Dissuade visitors to go if the queue is almost full
+		if (latestPlaceIndex > maxCapacity * 3/4) {
+			return Random.Range(1,4) == 4;
 		}
-		return true; // always return true in this version (no limit)
+		return true;
 	}
 
 	public int GetLatestPlaceIndex() {

@@ -16,6 +16,8 @@ public class MoveVisitor : MonoBehaviour {
 	private bool inAttraction; // the visitor is in a running attraction
 	private bool lookingForQueue; // the visitor is looking for a new queue
 	private bool reachingAttraction; // the visitor was first in the queue and is now going in the attraction
+	private float timeStartLooking;
+	private float maximumLookingTime = 25f;
 	private GameObject visitor;
 
 	// Use this for initialization
@@ -37,7 +39,6 @@ public class MoveVisitor : MonoBehaviour {
 
 		// visitor in queue
 		if (inQueue) {
-			//Debug.Log(this.gameObject.name + " is in queue position " + placeInQueueIndex);
 			if (placeInQueueIndex == 0 && attraction.CanStart()) { // If the visitor is in first place
 				attraction.TakesPlace();
 				Move(attraction.GetEntryLocation());
@@ -45,17 +46,14 @@ public class MoveVisitor : MonoBehaviour {
 				reachingAttraction = true;
 				currentQueue.RemoveFirstPlace();
 				placeInQueueIndex = -1;
-				// Debug.Log(this.gameObject.name + " starts the attraction");
 			} else { // If no
 				int newPosition = currentQueue.GetNewPlaceIndex(placeInQueueIndex);
-				// if (placeInQueueIndex != newPosition)
-					// Debug.Log(this.gameObject.name + " has update, was "+ placeInQueueIndex +" now is " + newPosition);
 				placeInQueueIndex = newPosition;
 				Move(currentQueue.GetPlacePosition(placeInQueueIndex));
 			}
 		}
 
-		// visitor in attraction
+		// visitor reaching attraction
 		else if (reachingAttraction) {
 			 if (agent.remainingDistance <= agent.stoppingDistance) {
 				 reachingAttraction = false;
@@ -82,30 +80,38 @@ public class MoveVisitor : MonoBehaviour {
 		// visitor looking for a queue
 		else if (lookingForQueue) {
 			// S'il a atteint sa destination
-			 if (agent.enabled && !agent.pathPending) {
-			     if (agent.isOnNavMesh && agent.remainingDistance <= agent.stoppingDistance && IsCloseEnough()) {
-			         if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) {
+			if (agent.enabled && !agent.pathPending) {
+			     if (agent.isOnNavMesh && /*agent.remainingDistance <= agent.stoppingDistance &&*/ IsCloseEnough()) {
+			         //if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) {
 								 	 placeInQueueIndex = currentQueue.GetLatestPlaceIndex();
 									 attraction = currentQueue.GetAttraction();
 			             currentQueue.TakesPlace();
 									 inQueue = true;
-			         }
+			         //}
 			     }
 				}
 			// S'il n'a pas atteint sa destination
-			 if (currentQueue.NextPlace() != goal && !inQueue) {
-				 if (agent.isOnNavMesh) {
+			if (agent.isOnNavMesh && currentQueue.NextPlace() != goal && !inQueue) {
+
 					 if (currentQueue.CanGo()) {
 							 goal = currentQueue.NextPlace();
 							 agent.destination = goal;
-					 } else {
+					 } else if (Time.time - timeStartLooking > maximumLookingTime) { // S'il cherche depuis trop longtemps (il est potentiellement coincé)
 						 	MoveToNextQueue();
-							 // agent.destination = new Vector3(125.0f,15.87f,221.5f); // position random
+					 } else {
+						 	NewQueue();
 					 }
-				 }
-			 	}
+			}
+			// vérifie que l'agent est sur un navmesh et le détruit sinon
+			AgentReady();
+
 		}
 
+
+	}
+
+	private void ResetTimeLooking() {
+		timeStartLooking = Time.time;
 	}
 
 	private bool AgentReady() {
@@ -118,8 +124,12 @@ public class MoveVisitor : MonoBehaviour {
 	}
 
 	private bool IsCloseEnough() {
-		Vector3 difference = agent.nextPosition - goal;
-		return (difference.x < 1 && difference.z < 1);
+		float epsilon = 1f;
+		var distance = Vector3.Distance(
+				new Vector3(agent.nextPosition.x, 0, agent.nextPosition.z),
+				new Vector3(goal.x, 0, goal.z)
+				);
+		return (distance < epsilon);
 	}
 
 	void NewQueue() {
@@ -129,7 +139,7 @@ public class MoveVisitor : MonoBehaviour {
 		}
 		queueIndex = newQueueIndex;
 		currentQueue = qm.GetQueue(queueIndex);
-
+		ResetTimeLooking();
 	}
 
 	void UpdateCurrentQueue() {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Simulation : MonoBehaviour {
 
@@ -12,12 +13,17 @@ public class Simulation : MonoBehaviour {
 	public Transform wanderingVistorsSpawn;
 	public Transform visitorsParent;
 	public Transform wanderingVisitorsParent;
+	public float timeBetweenSpawns = 1f;
 
 	private bool visitorsInstantiated = false;
 	private bool isCorrecting = false;
+	private List<Vector3> randomPositions;
+	private float mapWidth = 250;
+	private float mapLength = 300;
 
 	// Use this for initialization
 	void Start () {
+		LoadRandomPositions();
 		StartCoroutine(InstantiateVisitors());
 		StartCoroutine(InstantiateWanderingVisitors());
 	}
@@ -30,7 +36,7 @@ public class Simulation : MonoBehaviour {
 	IEnumerator InstantiateVisitors(int visitorsNbr) {
 		for (int i = 0; i < visitorsNbr; ++i) {
 			var visitor = Instantiate(visitorGO, visitorsSpawn.position, new Quaternion(), visitorsParent);
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(timeBetweenSpawns);
 		}
 		isCorrecting = false;
 	}
@@ -38,7 +44,7 @@ public class Simulation : MonoBehaviour {
 	IEnumerator InstantiateWanderingVisitors() {
 		for (int i = 0; i < wanderingVistors; ++i) {
 			var visitor = Instantiate(wanderingVisitorGO, wanderingVistorsSpawn.position, new Quaternion(), wanderingVisitorsParent);
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(timeBetweenSpawns);
 		}
 	}
 
@@ -50,6 +56,23 @@ public class Simulation : MonoBehaviour {
 		return children;
 	}
 
+
+	// Mausaise implémentation
+	public List<Vector3> LoadRandomPositions() {
+		randomPositions = new List<Vector3>();
+		// int it = 0;
+		// while (randomPositions.Count < 200 || it < 400) {
+		// 	var randVector = new Vector3 (Random.Range(0.0f, mapWidth), 0, Random.Range(0.0f, mapLength));
+		// 	NavMeshHit hit;
+		// 	if (NavMesh.SamplePosition(randVector, out hit, 1f, 30)) {
+		// 		randomPositions.Add(randVector);
+		// 		Debug.Log("add");
+		// 	}
+		// 	++it;
+		// }
+		return randomPositions;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (visitorsInstantiated) {
@@ -57,7 +80,6 @@ public class Simulation : MonoBehaviour {
 			// Corrects the total number of visitors
 			// Keeps instantiating until the number is right
 			if (children < visitors && !isCorrecting) {
-				Debug.Log("correction");
 				isCorrecting = true;
 				StartCoroutine(InstantiateVisitors(visitors - children));
 			}
